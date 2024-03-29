@@ -1,0 +1,41 @@
+export const SLUGS = {
+  collections: {
+    pages: 'pages',
+    media: 'media',
+    link: 'links',
+    accordionItem: 'accordionItem',
+    imageBoxes: 'imageBoxes',
+    iconBoxes: 'iconBoxes',
+    marques: 'marques',
+    TeamMembers: 'TeamMembers',
+    formField: 'formField',
+  },
+  blocks: {
+    hero: 'hero', // Replace with your actual hero block slug
+    accordion: 'accordion', // Replace with your
+    imageBox: 'imageBoxWraper',
+    iconBox: 'iconBoxWraper',
+    contentimagebox: 'contentImageBox',
+    ourstory: 'ourStory',
+    contentmultiimagebox: 'contentMultiImagesBox',
+    innerbannerbox: 'innerBannerBox',
+    abouthero: 'aboutHero',
+    fullwidthimage: 'fullWidthImage',
+    marQues: 'marQuesBlock',
+    TeamBlocks: 'TeamBlocks',
+    ContactHero: 'ContactHero',
+    contactForm: 'contactForm',
+    contentbox: 'contentBox',
+    fetchcontent: 'fetchContent',
+    mapbox: 'mapBox',
+  },
+  globals: {
+    // navbar: 'navbar',
+    // footerTopNavbar: 'footerTopNavbar',
+    // footer: 'footer',
+    // errorPage: 'errorPage',
+    // logos: 'logos',
+    // integrations: 'integrations',
+    demoform: 'demoForm',
+  },
+}

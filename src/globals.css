@@ -1,0 +1,141 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+html {
+          scroll-behavior: smooth;
+          @apply antialiased;
+        }
+body{
+  @apply antialiased;
+}
+.fetched-data h1{
+  @apply xl:text-4xl lg:text-3.5xl text-3xl font-900 uppercase mb-0 pb-6;
+}
+.custom-content-class h4,.fetched-data h2,.fetched-data ol li strong {
+  @apply md:text-3xl text-xl font-400 md:pb-8 pb-6;
+}
+.content-box-data p,.content-box-data ul,.fetched-data p,.fetched-data ul{
+@apply pb-4;
+}
+.content-box-data ul,.fetched-data ul{
+@apply pl-5;
+}
+.content-box-data ul li,.fetched-data ul li{
+  @apply list-disc list-outside;
+
+}
+.header-sticky{
+  width: calc(100% - 40px);
+}
+.header-sticky ul li a,.header-sticky .menu-main a.active-item{
+  color: #000;
+}
+.header-sticky button.bg-transparent{
+  color: #000;
+}
+.menu-main a.active-item{
+  @apply text-strong-orange;
+}
+.menu-main a.active-item:after{
+  transform:scaleX(1)
+}
+.custom-content-class h4:not(:first-child),.fetched-data h2,.fetched-data ol li strong { 
+padding-top: 2rem;
+}
+
+.circularProgressBar {
+  width: 50px;
+  height: 50px;
+  border: 4px solid lightgray;
+  border-radius: 50%;
+  position: relative;
+}
+
+.progressBarFill {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: blue;
+  clip-path: polygon(0 0, 100% 0, 100% 0, 0 0); /* Initial clip-path, 0% progress */
+  transition: clip-path 0.3s ease;
+}
+.menu-parent-element:after {
+  display:block;
+  content: '';
+  border-bottom: solid 2px #C2912E;
+  position: relative;
+  bottom: -14px;
+  transform: scaleX(0);  
+  transition: transform 250ms ease-in-out;
+}
+.menu-parent-element:hover:after { transform: scaleX(1); }
+
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  /* Center slide text vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+input:focus ~ span,
+input:not(:focus):valid ~ span,.invalid ~ span {
+    top:-8px;
+    font-size: 12px;
+    @apply text-strong-orange;
+}
+
+input[type="checkbox"],input[type="radio"] {
+  @apply mr-2;
+}
+.sideslider .submit-btn{
+  padding-top:112px;
+  position: relative;
+  
+}
+.sideslider .submit-btn:before{
+  content: '';
+    box-shadow: 0px -8px 16px 0px rgba(0, 0, 0, 0.05);
+    position: absolute;
+    bottom: 0;
+    width: calc(100% + 115px);
+    height: 70px;
+    left: -40px;
+    right: 0;
+    z-index: -1;
+}
+.swiper-button-prev, .swiper-button-next{
+  color: #000!important;
+}
+.mobile-demo-button button{
+@apply px-6 py-4 lg:w-auto w-full mb-5 rounded-4xl uppercase text-sm border border-strong-orange leading-none focus:outline-none focus:ring md:inline block bg-strong-orange text-white hover:bg-white hover:text-strong-orange text-center;
+}
+.fade-in {
+	opacity: 1;
+	animation-name: fadeInOpacity;
+	animation-iteration-count: 1;
+	animation-timing-function: ease-in;
+	animation-duration: 1s;
+}
+
+@keyframes fadeInOpacity {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+#customized_reporting,#certified-payroll,#our-story,#about-hero{
+  display: none;
+}

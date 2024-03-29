@@ -1,0 +1,86 @@
+# This is a sample build configuration for .NET Core.
+# Check our guides at https://confluence.atlassian.com/x/5Q4SMw for more examples.
+# Only use spaces to indent your .yml configuration.
+# -----
+# You can specify a custom docker image from Docker Hub as your build environment.
+image: node:18.17.1
+options:
+  max-time: 30
+
+definitions:
+  caches:
+    nextcache: .next/cache
+  steps:
+    - step: &build-web
+        name: Building Web
+        caches:
+          - node
+          - nextcache
+        script:
+          # install necessary tooling
+          - apt-get update
+          - apt-get -y install zip
+          # install project packages and build
+          - npm ci
+          - npm run build
+          # reinstall tooling but only for production
+          - npm ci --production
+          # package up files for deployment (include node_modules)
+          - zip -r output.zip .next build dist node_modules package-lock.json package.json public/favicon.png  public/favicon.ico
+        artifacts:
+          - output.zip
+    - step: &deploy-web
+        name: "Deploying Web"
+        script:
+          - pipe: microsoft/azure-web-apps-deploy:1.0.0
+            variables:
+              AZURE_APP_ID: $AZURE_APP_ID
+              AZURE_PASSWORD: $AZURE_PASSWORD
+              AZURE_TENANT_ID: $AZURE_TENANT_ID
+              AZURE_RESOURCE_GROUP: $AZURE_RESOURCE_GROUP
+              AZURE_APP_NAME: $AZURE_SERVICE_NAME
+              ZIP_FILE: 'output.zip'
+    - step: &deploy-db
+        name: "Deploying DB"
+        image: mongo:4.4
+        script:
+          # dump source db
+          - mongodump --uri=${MONGO_SOURCE_URI} --out db_out
+          # restore source to target
+          - mongorestore --noIndexRestore --drop --uri=${MONGO_TARGET_URI} db_out/${MONGO_SOURCE_DB}
+    - step: &deploy-storage
+        name: "Deploying Storage"
+        script:
+          # copy source container to target container
+          - pipe: microsoft/azure-storage-deploy:2.0.1
+            variables:
+              SOURCE: 'https://${STORAGE_ACCOUNT}.blob.core.windows.net/${STOAGE_CONTAINER_SOURCE}'
+              SOURCE_SAS_TOKEN: $AZURE_STORAGE_SAS_TOKEN
+              DESTINATION: 'https://${STORAGE_ACCOUNT}.blob.core.windows.net/${STOAGE_CONTAINER_DESTINATION}'
+              DESTINATION_SAS_TOKEN: $AZURE_STORAGE_SAS_TOKEN
+              EXTRA_ARGS: '--overwrite=true --recursive=true'
+              DEBUG: 'true'
+pipelines:
+  branches:
+    develop:
+      - step:
+          <<: *build-web
+          deployment: build-web-dev
+      - step:
+          <<: *deploy-web
+          deployment: deploy-web-dev
+    master:
+      - step:
+          <<: *build-web
+          deployment: build-web-prod
+      - parallel:
+          steps:
+            - step:
+                <<: *deploy-web
+                deployment: deploy-web-prod
+            - step:
+                <<: *deploy-db
+                deployment: deploy-db-prod
+            - step:
+                <<: *deploy-storage
+                deployment: deploy-storage-prod
